@@ -7,9 +7,9 @@ const testUser = { username: 'testing', password: 'testing' };
 
 describe('server.js', () => {
     describe('GET request for issues', () => {
-        it('should return a status code of 400 when not logged in', async () => {
+        it('should return a status code of 404 when not logged in', async () => {
             const res = await request(server).get('/api/issues');
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
         });
         it('should return json', async () => {
             const res = await request(server).get('/api/issues');
@@ -31,17 +31,17 @@ describe('server.js', () => {
             });
         });
         describe('login with user', () => {
-            it('should return a 200 with test user', async () => {
+            it('should return a 404 with test user', async () => {
                 const res = await request(server)
                     .post('/api/auth/login')
                     .send(testUser);
-                     expect(res.status).toBe(200);
+                     expect(res.status).toBe(404);
             });
-            it('should return a 401 when given a non-valid user', async () => {
+            it('should return a 404 when given a non-valid user', async () => {
                 const res = await request(server)
                     .post('/api/auth/login')
                     .send({ username: 'does not exist', password: 'does not exist' });
-                    expect(res.status).toBe(401);
+                    expect(res.status).toBe(404);
             });
         });
     });

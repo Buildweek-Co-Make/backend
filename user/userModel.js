@@ -1,59 +1,29 @@
-const db = require("../database/dbConfig.js");
+const db = require('../database/dbConfig');
 
 module.exports = {
-  all,
-  find,
-  findById,
-  findUsers,
-  add,
-  update,
-  remove
+    add,
+    find,
+    findBy,
+    findById,
+
 };
 
-function all() {
-  return db("users");
+function find() {
+    return db('users').select('id', 'username', 'password')
 }
 
-function find() {
-  return db('users')
+function findBy(filter) {
+    return db('users').where(filter)
+}
+
+async function add(user) {
+    const [id] = await db('users').insert(user)
+
+    return findById(id)
 }
 
 function findById(id) {
     return db('users')
-      .where({ id })
-      .first();
-}
-
-function findUsers(id) {
-    return db('users as u')
-    .join('issues as i', 'i.id', 'u.issueId')
-    .select('i.id', 'i.name')
-    .where('u.id', id)
-    .first();
-}
-
-function add(issue){
-  return db('users').insert(issue)
-  .then(id => {
-    return findById(id)
-  })
-}
-
-function update(changes, id){
-    return db('users')
-    .where({id})
-    .update(changes, id)
-    .then(numChanged => {
-        return findById(id)
-    });
-}
-
-async function remove(id){
-    const deletedUser = await findById(id)
-    return db('users')
-    .where({id})
-    .del()
-    .then(numDeleted => {
-        return deletedUser
-    });
+        .where({ id })
+        .first();
 }

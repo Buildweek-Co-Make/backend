@@ -6,6 +6,7 @@ const errHandler = require('./errorHandler.js');
 
 const issuesRouter = require('../issues/issuesRouter');
 const usersRouter = require('../user/usersRouter');
+const authenticate = require('../auth/authenticate-middleware.js');
 const authRouter = require('../auth/auth-router.js');
 
 
